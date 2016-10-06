@@ -6,10 +6,8 @@ package com.example;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -52,6 +50,19 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
 
     }
 
+    @GetMapping("/newproject")
+    public String newProject(Model model){
+        model.addAttribute("project", new Project());
+        return "newProject";
+
+    }
+    @RequestMapping(method=RequestMethod.POST, path="/newproject")
+    public String addNewProject(@ModelAttribute Project project){
+        project.setUser_ID(5); //Hårdkodat tills vi får inloggad User
+        projectRepository.newProject(project);
+        return "redirect:/newproject";
+
+    }
 
 
 

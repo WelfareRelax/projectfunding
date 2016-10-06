@@ -138,5 +138,19 @@ public class SqlServerProjectRepository implements ProjectRepository {
         return new Project(rs.getLong("id"), rs.getString("title"), rs.getLong("User_ID"), rs.getString("Body"),
                 rs.getLong("Requested"), rs.getLong("Total_fund") );
     }
+    public Project newProject(Project project) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Project] (Title, User_ID, Body, Requested, Total_fund) VALUES (?,?,?,?,0)")) {
+
+            ps.setString(1, project.title);
+            ps.setLong(2, project.User_ID);
+            ps.setString(3, project.Body);
+            ps.setLong(4, project.Requested);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e + "Trouble in newProject() in SQL-repo. Could probably not execute SQLupdate");
+        }
+        return project;
+    }
 }
 

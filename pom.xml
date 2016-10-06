@@ -43,6 +43,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc</artifactId>
+			<version>6.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/com.microsoft.sqlserver/sqljdbc/6.0/sqljdbc42.jar</systemPath>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<build>
