@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>All titles</title>
+</head>
+<body>
+
+<article th:each="project : ${projects}">
+
+
+       <p>Project title:  <a th:href="@{${project.id}}"> <span th:text="${project.title}"/></a> </p>
+    <p>Project id: <span th:text="${project.id}" /></p>
+    <p>Requested: <span th:text="${project.Requested}" /> </p>
+    <p>Total fund: <span th:text="${project.Total_fund}" /> </p>
+    <br />
+
+</article>
+
+
+
+
+
+</body>
+</html>
