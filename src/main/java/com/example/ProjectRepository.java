@@ -12,5 +12,6 @@ public interface ProjectRepository {
     List<Comment> getEntriesIn(Project project);
     Project postComment(String title, long projectid, long pledged, String message);
     List<Project> getAllProjects();
+    Project newProject(Project project);
 
 }
