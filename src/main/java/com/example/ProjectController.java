@@ -74,7 +74,7 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     public String submit(HttpSession session, @RequestParam String fname, @RequestParam String lname) {
         if (fname.equalsIgnoreCase("ella") && lname.equalsIgnoreCase("josefin")) {
             session.setAttribute("user", fname);
-            return "/LoggedIn";
+            return "redirect:/newproject";
         }
         return "/logIn";
         //inloggning med lösenord
