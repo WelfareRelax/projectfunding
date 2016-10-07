@@ -21,8 +21,6 @@ public class ProjectController {
     private ProjectRepository projectRepository;
 
 
-
-
 @RequestMapping(method = RequestMethod.POST, path = "project/{projectId}/addposts")
 public String InsertPosts(HttpServletRequest request, @RequestParam String title, @PathVariable long projectId, @RequestParam long pledged, @RequestParam String message ) {
     Project project = projectRepository.postComment(title, projectId, pledged, message);
@@ -61,6 +59,7 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     public String addNewProject(@ModelAttribute Project project){
         project.setUser_ID(5); //Hårdkodat tills vi får inloggad User
         projectRepository.newProject(project);
+        System.out.println("ta bort när det är ok att pusha");
         return "redirect:/newproject";
 
     }
