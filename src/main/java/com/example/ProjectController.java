@@ -50,8 +50,8 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     }
 
     @GetMapping("/newproject")
-    public String newProject(Model model){
-        model.addAttribute("project", new Project());
+    public String newProject(Model model, HttpSession session){
+        model.addAttribute("project", new Project()).addAttribute("user",session.getAttribute("user"));
         return "newProject";
 
     }
@@ -59,7 +59,6 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     public String addNewProject(@ModelAttribute Project project){
         project.setUser_ID(5); //Hårdkodat tills vi får inloggad User
         projectRepository.newProject(project);
-        System.out.println("ta bort när det är ok att pusha");
         return "redirect:/newproject";
 
     }

@@ -7,7 +7,7 @@
     <link rel="Stylesheet" href="/Cool.css"/>
 </head>
 <body>
-<div> Logged in as USERNAME</div>
+<div> Logged in as <span th:text="${user}"></span></div>
 <h2> Create new project</h2>
 <h5>Fill in the details below to create a new project</h5>
 <form action="#" th:action="@{/newproject}" th:object="${project}" method="POST">
