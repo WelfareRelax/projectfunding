@@ -80,12 +80,11 @@ public class SqlServerProjectRepository implements ProjectRepository {
     public Project postComment(String title, long projectid, long pledged, String message) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Comments] (title, ProjectID, pledged, message) VALUES (?,?,?,?)")) {
-
             ps.setString(1, title);
             ps.setLong(2, projectid);
             ps.setLong(3, pledged);
             ps.setString(4, message);
-
+            this.depositToProject(projectid, pledged);
             int rs = ps.executeUpdate();
             if (rs == 0) {
 
@@ -120,9 +119,7 @@ public class SqlServerProjectRepository implements ProjectRepository {
     @Override
     public List<Comment> getEntriesIn(Project project) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * " +
-
-                     "FROM [dbo].[Comments] p WHERE P.ProjectID = ?  ORDER BY p.Date DESC")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM [dbo].[Comments] p WHERE P.ProjectID = ?  ORDER BY p.Date DESC")) {
             ps.setLong(1, project.id);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -166,5 +163,21 @@ public class SqlServerProjectRepository implements ProjectRepository {
         }
         return project;
     }
+
+  public void depositToProject(long projectID, long newDeposit){
+      Project project=this.getProject(projectID);
+      try(Connection conn=dataSource.getConnection();
+      PreparedStatement ps=conn.prepareStatement("UPDATE [dbo].[Project] SET Total_fund=? WHERE ID=? ")){
+          long totFund=project.getTotal_fund()+newDeposit;
+          System.out.println(totFund);
+          ps.setLong(1,totFund);
+          ps.setLong(2,projectID);
+          ps.executeUpdate();
+  }catch (SQLException e) {
+      throw new ProjectRepositoryException(e + "Trouble in depositToProject() in SQLServerProjectRepository. Could probably not execute query");
+
+      }
+
+  }
 }
 

@@ -25,7 +25,6 @@ public class ProjectController {
 
 @RequestMapping(method = RequestMethod.POST, path = "project/{projectId}/addposts")
 public String InsertPosts(HttpServletRequest request, @RequestParam String title, @PathVariable long projectId, @RequestParam long pledged, @RequestParam String message ) {
-
     Project project = projectRepository.postComment(title, projectId, pledged, message);
     String redirectUrl = request.getScheme() + "://localhost:8080/project/{projectId}/";
     return "redirect:" + redirectUrl;
