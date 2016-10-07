@@ -84,7 +84,7 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     public ModelAndView createUser() {
         return new ModelAndView("/createUser");
     }
-    // Skapa användare
+    // Skapa användare.
 
     @RequestMapping(method = RequestMethod.POST, path = "/userCreated")
     public ModelAndView createdUser(HttpSession session, @RequestParam String spara1, @RequestParam String spara2) {
