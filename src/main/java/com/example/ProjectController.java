@@ -22,6 +22,7 @@ public class ProjectController {
 
 
 
+
 @RequestMapping(method = RequestMethod.POST, path = "project/{projectId}/addposts")
 public String InsertPosts(HttpServletRequest request, @RequestParam String title, @PathVariable long projectId, @RequestParam long pledged, @RequestParam String message ) {
 
@@ -87,9 +88,12 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     // Skapa användare
 
     @RequestMapping(method = RequestMethod.POST, path = "/userCreated")
-    public ModelAndView createdUser() {
+    public ModelAndView createdUser(HttpSession session, @RequestParam String spara1, @RequestParam String spara2) {
+        projectRepository.postUser(spara1, spara2);
+
         return new ModelAndView("/LogIn");
-    } // Går tillbaka till Login efter man skapat användare.
+    } //11 Går tillbaka till Login efter man skapat användare. Sparar via databasen användarnamn och lösenord.
+
 
 
 }
