@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Skapa användare</title>
+</head>
+<body background="Investering.jpg">
+<div id="centrera"><h1><big>Välkommen till FundedByMe</big></h1></div>
+<p><big><strong>Skapa konto:</strong></big></p>
+
+<form action="/userCreated" method="post">
+    <p></p>
+    <input type="text" name="förnamn" placeholder="Förnamn.."/>
+    <p></p>
+    <input type="text" name="efternamn" placeholder="Efternamn.." />
+    <p></p>
+    <input type="text" name="adress" placeholder="Adress.."/>
+    <p></p>
+    <input type="text" name="stad" placeholder="Stad.."/>
+    <p></p>
+    <input type="text" name="land" placeholder="Land.."/>
+    <p></p>
+    <div><input type="radio" name="gender" value="male"/> Man</div>
+    <div><input type="radio" name="gender" value="female"/> Kvinna</div>
+    <p></p>
+    <input type="text" name="användarnamn" placeholder="Användarnamn.."/>
+    <p></p>
+    <input type="text" name="lösenord" placeholder="Lösenord.."/>
+    <p></p>
+    <div><input type="text"
+                cols="40"
+                rows="5"
+                style="width:200px; height:50px;"
+                name="Text1"
+                id="Text1"
+                value="" /> Kommentar/meddelande</div>
+    <p></p>
+    <input type="submit" value="Skapa användare"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Demo app</title>
+    <link rel="Stylesheet" href="/Cool.css"/>
+</head>
+<body background="Investering.jpg">
+<div id="centrera"><h1><big>Välkommen till FundedByMe</big></h1></div>
+<p></p>
+<p></p>
+<div id="centkurs">Här finnner du möjligheten att investera dina pengar eller att hitta investerare till ditt projekt.</div>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p><big><strong>Note:</strong> För att lägga ut ett projekt och hitta investerare måste du logga in.</big></p>
+<p></p>
+<p></p>
+<p></p>
+
+<form action="/logIn" method="post">
+    <input type="text" name="fname" placeholder="Användarnamn"/><p></p>
+    <input type="text" name="lname" placeholder="Lösenord"/><p></p>
+    <input type="submit" value="Logga in"/>
+</form>
+<form action="/user" method="get">
+    <input type="submit" value="Skapa användare"/>
+</form>
+
+</body>
+</html>
