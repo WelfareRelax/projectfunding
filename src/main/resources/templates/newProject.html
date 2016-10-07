@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title>New Project</title>
@@ -12,11 +12,10 @@
 <h5>Fill in the details below to create a new project</h5>
 <form action="#" th:action="@{/newproject}" th:object="${project}" method="POST">
     <div>test</div>
-<div>Project title: <input placeholder="Title..." th:field="*{title}"/></div>
-<div>Project description: <input placeholder="Description..." th:field="*{Body}" /></div>
-<div>Requested amount: <input placeholder="Amount in SEK..." th:field="*{Requested}"/> </div>
-<div> <input type="submit" value="Create project"/></div>
-<!--//add deadline in a calander?-->
+    <div>Project title: <input placeholder="Title..." th:field="*{title}"/></div>
+    <div>Project description: <input placeholder="Description..." th:field="*{Body}" /></div>
+    <div>Requested amount: <input placeholder="Amount in SEK..." th:field="*{Requested}"/> </div>
+    <div> <input type="submit" value="Create project"/></div>
 
 </form>
 </body>
