@@ -44,6 +44,20 @@ public class SqlServerProjectRepository implements ProjectRepository {
             throw new ProjectRepositoryException(e);
         }
     }
+    @Override
+    public boolean getUser(String UserName, String Password) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT UserName, Password FROM [dbo].[Users] WHERE UserName = ? AND Password = ?")) {
+            ps.setString(1, UserName);
+            ps.setString(2, Password);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) throw new ProjectRepositoryException("No user with username: " + UserName);
+                else return true;
+            }
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e);
+        } // Kollar om användarnamn och lösenord stämmer.
+    }
 
     @Override
     public List<Project> getAllProjects() {
