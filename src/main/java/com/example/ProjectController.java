@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +65,31 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/logIn")
+    public ModelAndView logIn() {
+        return new ModelAndView("/logIn");
+    } // Logga in sidan.
+
+    @RequestMapping(method = RequestMethod.POST, path = "/logIn")
+    public String submit(HttpSession session, @RequestParam String fname, @RequestParam String lname) {
+        if (fname.equalsIgnoreCase("ella") && lname.equalsIgnoreCase("josefin")) {
+            session.setAttribute("user", fname);
+            return "redirect:/newproject";
+        }
+        return "/logIn";
+        //inloggning med lösenord
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/user")
+    public ModelAndView createUser() {
+        return new ModelAndView("/createUser");
+    }
+    // Skapa användare
+
+    @RequestMapping(method = RequestMethod.POST, path = "/userCreated")
+    public ModelAndView createdUser() {
+        return new ModelAndView("/LogIn");
+    } // Går tillbaka till Login efter man skapat användare.
 
 
 }
