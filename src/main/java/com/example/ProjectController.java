@@ -72,7 +72,7 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
 
     @RequestMapping(method = RequestMethod.POST, path = "/logIn")
     public String submit(HttpSession session, @RequestParam String fname, @RequestParam String lname) {
-        if (fname.equalsIgnoreCase("ella") && lname.equalsIgnoreCase("josefin")) {
+        if (projectRepository.getUser(fname, lname )) {
             session.setAttribute("user", fname);
             return "redirect:/newproject";
         }
