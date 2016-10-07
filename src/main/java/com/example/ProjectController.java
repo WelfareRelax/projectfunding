@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +84,7 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     public ModelAndView createUser() {
         return new ModelAndView("/createUser");
     }
-    // Skapa användare
+    // Skapa användare.
 
     @RequestMapping(method = RequestMethod.POST, path = "/userCreated")
     public ModelAndView createdUser(HttpSession session, @RequestParam String spara1, @RequestParam String spara2) {
@@ -91,7 +93,14 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
         return new ModelAndView("/LogIn");
     } //11 Går tillbaka till Login efter man skapat användare. Sparar via databasen användarnamn och lösenord.
 
-
+    @GetMapping("/logout")
+    public String logout(HttpSession session, HttpServletResponse res) {
+        session.invalidate();
+        Cookie cookie = new Cookie("jsessionid", "");
+        cookie.setMaxAge(0);
+        res.addCookie(cookie);
+        return "logIn";
+    }
 
 }
 
