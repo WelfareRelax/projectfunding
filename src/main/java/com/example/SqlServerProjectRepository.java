@@ -59,6 +59,23 @@ public class SqlServerProjectRepository implements ProjectRepository {
             throw new ProjectRepositoryException(e);
         }
     }
+    public void postUser(String UserName, String Password) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Users] (UserName, Password) VALUES (?,?)")) {
+
+            ps.setString(1, UserName);
+            ps.setString(2, Password);
+
+            int rs = ps.executeUpdate();
+            if (rs == 0) {
+
+                System.out.println("error is 0");
+            }
+
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e);
+        } //11 sparar användarnman och lösenord.
+    }
 
     public Project postComment(String title, long projectid, long pledged, String message) {
         try (Connection conn = dataSource.getConnection();
@@ -74,10 +91,7 @@ public class SqlServerProjectRepository implements ProjectRepository {
 
                 System.out.println("error is 0");
             }
-
             return getProject(projectid);
-
-
 
                 /*else return rsBlog(rs);*/
 
@@ -90,8 +104,8 @@ public class SqlServerProjectRepository implements ProjectRepository {
     @Override
     public User getAuthorOf(Project project) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT u.[UserID], u.[UserName], u.[FirstName], u.[LastName] " +
-                     "FROM [dbo].[Users] u JOIN [dbo].[Project] b ON b.User_Id = u.UserID " +
+             PreparedStatement ps = conn.prepareStatement("SELECT u.[User_ID], u.[UserName], u.[FirstName], u.[LastName] " +
+                     "FROM [dbo].[Users] u JOIN [dbo].[Project] b ON b.User_Id = u.User_ID " +
                      "WHERE b.id = ?")) {
             ps.setLong(1, project.id);
             try (ResultSet rs = ps.executeQuery()) {
