@@ -3,9 +3,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="${project.title}"></title>
+    <link rel="Stylesheet" href="/Cool.css"/>
 </head>
 <body>
  <h1 th:text="${project.title}" />
+ <div th:text="${project.body}"></div>
  <h1>requested:</h1><h1 th:text="${project.Requested}" />
  <h1>Totals funds gathered:</h1><h1 th:text="${project.Total_fund}" />
 
@@ -43,6 +45,8 @@
     <input type="submit"/>
 </form>
 
-
+ <ul>
+     <li><a href="/Index.html">Home</a></li>
+ </ul>
 </body>
 </html>

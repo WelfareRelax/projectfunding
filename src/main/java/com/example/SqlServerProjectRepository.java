@@ -44,6 +44,20 @@ public class SqlServerProjectRepository implements ProjectRepository {
             throw new ProjectRepositoryException(e);
         }
     }
+    @Override
+    public boolean getUser(String UserName, String Password) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT UserName, Password FROM [dbo].[Users] WHERE UserName = ? AND Password = ?")) {
+            ps.setString(1, UserName);
+            ps.setString(2, Password);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) throw new ProjectRepositoryException("No user with username: " + UserName);
+                else return true;
+            }
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e);
+        } // Kollar om användarnamn och lösenord stämmer.
+    }
 
     @Override
     public List<Project> getAllProjects() {
@@ -59,15 +73,12 @@ public class SqlServerProjectRepository implements ProjectRepository {
             throw new ProjectRepositoryException(e);
         }
     }
-
-    public Project postComment(String title, long projectid, long pledged, String message) {
+    public void postUser(String UserName, String Password) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Comments] (title, ProjectID, pledged, message) VALUES (?,?,?,?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Users] (UserName, Password) VALUES (?,?)")) {
 
-            ps.setString(1, title);
-            ps.setLong(2, projectid);
-            ps.setLong(3, pledged);
-            ps.setString(4, message);
+            ps.setString(1, UserName);
+            ps.setString(2, Password);
 
             int rs = ps.executeUpdate();
             if (rs == 0) {
@@ -75,9 +86,25 @@ public class SqlServerProjectRepository implements ProjectRepository {
                 System.out.println("error is 0");
             }
 
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e);
+        } //11 sparar användarnman och lösenord.
+    }
+
+    public Project postComment(String title, long projectid, long pledged, String message) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Comments] (title, ProjectID, pledged, message) VALUES (?,?,?,?)")) {
+            ps.setString(1, title);
+            ps.setLong(2, projectid);
+            ps.setLong(3, pledged);
+            ps.setString(4, message);
+            this.depositToProject(projectid, pledged);
+            int rs = ps.executeUpdate();
+            if (rs == 0) {
+
+                System.out.println("error is 0");
+            }
             return getProject(projectid);
-
-
 
                 /*else return rsBlog(rs);*/
 
@@ -90,8 +117,8 @@ public class SqlServerProjectRepository implements ProjectRepository {
     @Override
     public User getAuthorOf(Project project) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT u.[UserID], u.[UserName], u.[FirstName], u.[LastName] " +
-                     "FROM [dbo].[Users] u JOIN [dbo].[Project] b ON b.User_Id = u.UserID " +
+             PreparedStatement ps = conn.prepareStatement("SELECT u.[User_ID], u.[UserName], u.[FirstName], u.[LastName] " +
+                     "FROM [dbo].[Users] u JOIN [dbo].[Project] b ON b.User_Id = u.User_ID " +
                      "WHERE b.id = ?")) {
             ps.setLong(1, project.id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -106,9 +133,7 @@ public class SqlServerProjectRepository implements ProjectRepository {
     @Override
     public List<Comment> getEntriesIn(Project project) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * " +
-
-                     "FROM [dbo].[Comments] p WHERE P.ProjectID = ?  ORDER BY p.Date DESC")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM [dbo].[Comments] p WHERE P.ProjectID = ?  ORDER BY p.Date DESC")) {
             ps.setLong(1, project.id);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -152,5 +177,21 @@ public class SqlServerProjectRepository implements ProjectRepository {
         }
         return project;
     }
+
+  public void depositToProject(long projectID, long newDeposit){
+      Project project=this.getProject(projectID);
+      try(Connection conn=dataSource.getConnection();
+      PreparedStatement ps=conn.prepareStatement("UPDATE [dbo].[Project] SET Total_fund=? WHERE ID=? ")){
+          long totFund=project.getTotal_fund()+newDeposit;
+          System.out.println(totFund);
+          ps.setLong(1,totFund);
+          ps.setLong(2,projectID);
+          ps.executeUpdate();
+  }catch (SQLException e) {
+      throw new ProjectRepositoryException(e + "Trouble in depositToProject() in SQLServerProjectRepository. Could probably not execute query");
+
+      }
+
+  }
 }
 

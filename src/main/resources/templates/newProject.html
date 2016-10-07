@@ -4,19 +4,25 @@
     <meta charset="UTF-8"/>
     <title>New Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="Stylesheet" href="/Cool.css"/>
 </head>
 <body>
-<div> Logged in as USERNAME</div>
+<div> Logged in as <span th:text="${user}"></span></div>
 <h2> Create new project</h2>
 <h5>Fill in the details below to create a new project</h5>
 <form action="#" th:action="@{/newproject}" th:object="${project}" method="POST">
-    <div>test</div>
     <div>Project title: <input placeholder="Title..." th:field="*{title}"/></div>
-    <div>Project description: <input placeholder="Description..." th:field="*{Body}" /></div>
+
+    <div>Project description: <textarea placeholder="Description..." th:field="*{Body}" cols="40" rows="5"></textarea></div>
+        <!--<input placeholder="Description..." th:field="*{Body}" />-->
+
     <div>Requested amount: <input placeholder="Amount in SEK..." th:field="*{Requested}"/> </div>
     <div> <input type="submit" value="Create project"/></div>
 
 </form>
+
+<ul>
+    <li><a href="/Index.html">Home</a></li>
+</ul>
 </body>
 </html>

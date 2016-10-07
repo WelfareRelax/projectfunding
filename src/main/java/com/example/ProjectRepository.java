@@ -13,5 +13,7 @@ public interface ProjectRepository {
     Project postComment(String title, long projectid, long pledged, String message);
     List<Project> getAllProjects();
     Project newProject(Project project);
+    void postUser(String UserName, String Password); //11 sparar användarnamn och lösenord.
+    boolean getUser(String UserName, String Password); // Kollar om användarnamn och lösenord stämmer.
 
 }

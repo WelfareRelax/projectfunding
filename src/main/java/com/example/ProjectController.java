@@ -21,10 +21,8 @@ public class ProjectController {
     private ProjectRepository projectRepository;
 
 
-
 @RequestMapping(method = RequestMethod.POST, path = "project/{projectId}/addposts")
 public String InsertPosts(HttpServletRequest request, @RequestParam String title, @PathVariable long projectId, @RequestParam long pledged, @RequestParam String message ) {
-
     Project project = projectRepository.postComment(title, projectId, pledged, message);
     String redirectUrl = request.getScheme() + "://localhost:8080/project/{projectId}/";
     return "redirect:" + redirectUrl;
@@ -52,8 +50,8 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     }
 
     @GetMapping("/newproject")
-    public String newProject(Model model){
-        model.addAttribute("project", new Project());
+    public String newProject(Model model, HttpSession session){
+        model.addAttribute("project", new Project()).addAttribute("user",session.getAttribute("user"));
         return "newProject";
 
     }
@@ -72,7 +70,7 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
 
     @RequestMapping(method = RequestMethod.POST, path = "/logIn")
     public String submit(HttpSession session, @RequestParam String fname, @RequestParam String lname) {
-        if (fname.equalsIgnoreCase("ella") && lname.equalsIgnoreCase("josefin")) {
+        if (projectRepository.getUser(fname, lname )) {
             session.setAttribute("user", fname);
             return "redirect:/newproject";
         }
@@ -87,9 +85,12 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     // Skapa användare
 
     @RequestMapping(method = RequestMethod.POST, path = "/userCreated")
-    public ModelAndView createdUser() {
+    public ModelAndView createdUser(HttpSession session, @RequestParam String spara1, @RequestParam String spara2) {
+        projectRepository.postUser(spara1, spara2);
+
         return new ModelAndView("/LogIn");
-    } // Går tillbaka till Login efter man skapat användare.
+    } //11 Går tillbaka till Login efter man skapat användare. Sparar via databasen användarnamn och lösenord.
+
 
 
 }
