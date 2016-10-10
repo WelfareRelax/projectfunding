@@ -44,6 +44,7 @@ public class SqlServerProjectRepository implements ProjectRepository {
             throw new ProjectRepositoryException(e);
         }
     }
+
     @Override
     public boolean getUser(String UserName, String Password) {
         try (Connection conn = dataSource.getConnection();
@@ -73,6 +74,7 @@ public class SqlServerProjectRepository implements ProjectRepository {
             throw new ProjectRepositoryException(e);
         }
     }
+
     public void postUser(String UserName, String Password) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Users] (UserName, Password) VALUES (?,?)")) {
@@ -161,8 +163,9 @@ public class SqlServerProjectRepository implements ProjectRepository {
 
     private Project rsProject(ResultSet rs) throws SQLException {
         return new Project(rs.getLong("id"), rs.getString("title"), rs.getLong("User_ID"), rs.getString("Body"),
-                rs.getLong("Requested"), rs.getLong("Total_fund") );
+                rs.getLong("Requested"), rs.getLong("Total_fund"));
     }
+
     public Project newProject(Project project) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Project] (Title, User_ID, Body, Requested, Total_fund) VALUES (?,?,?,?,0)")) {
@@ -178,20 +181,51 @@ public class SqlServerProjectRepository implements ProjectRepository {
         return project;
     }
 
-  public void depositToProject(long projectID, long newDeposit){
-      Project project=this.getProject(projectID);
-      try(Connection conn=dataSource.getConnection();
-      PreparedStatement ps=conn.prepareStatement("UPDATE [dbo].[Project] SET Total_fund=? WHERE ID=? ")){
-          long totFund=project.getTotal_fund()+newDeposit;
-          System.out.println(totFund);
-          ps.setLong(1,totFund);
-          ps.setLong(2,projectID);
-          ps.executeUpdate();
-  }catch (SQLException e) {
-      throw new ProjectRepositoryException(e + "Trouble in depositToProject() in SQLServerProjectRepository. Could probably not execute query");
+    public void depositToProject(long projectID, long newDeposit) {
+        Project project = this.getProject(projectID);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Project] SET Total_fund=? WHERE ID=? ")) {
+            long totFund = project.getTotal_fund() + newDeposit;
+            System.out.println(totFund);
+            ps.setLong(1, totFund);
+            ps.setLong(2, projectID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e + "Trouble in depositToProject() in SQLServerProjectRepository. Could probably not execute query");
+        }
+    }
 
-      }
+    @Override
+    public int getUserID(String userName) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT User_ID FROM [dbo].[Users] WHERE UserName=? ")) {
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+            int userID = 0;
+            while (rs.next()) {
+                userID = rs.getInt("User_ID");
+            }
+            return userID;
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e + "Trouble in getUserID() in SQLServerProjectRepository. Could probably not execute query");
+        }
+    }
 
-  }
+    @Override
+    public List<Project> getUsersProjects(String userName) {
+        int userID = this.getUserID(userName);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM [dbo].[Project] WHERE User_ID=?")) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            List<Project> projects = new ArrayList<>();
+            while (rs.next()) {
+                projects.add(rsProject(rs));
+            }
+            return projects;
+
+        } catch (SQLException e) {
+            throw new ProjectRepositoryException(e + "Trouble in getUsersProjects() in SQLServerProjectRepository. Could probably not execute query");
+        }
+    }
 }
-

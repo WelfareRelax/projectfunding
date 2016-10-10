@@ -8,13 +8,21 @@
 </head>
 <body>
 <div> Logged in as <span th:text="${user}"></span></div>
-<h2> Create new project</h2>
+
+<h2> Your projects</h2>
+<ul>
+    <li th:each="project1:${projects}">
+        <div>Project name: <span th:text="${project1.title}"></span></div>
+        <div>Requested amount: <span th:text="${project1.Requested}"></span></div>
+    </li>
+</ul>
+
+<h3> Create new project</h3>
 <h5>Fill in the details below to create a new project</h5>
 <form action="#" th:action="@{/newproject}" th:object="${project}" method="POST">
     <div>Project title: <input placeholder="Title..." th:field="*{title}"/></div>
 
     <div>Project description: <textarea placeholder="Description..." th:field="*{Body}" cols="40" rows="5"></textarea></div>
-        <!--<input placeholder="Description..." th:field="*{Body}" />-->
 
     <div>Requested amount: <input placeholder="Amount in SEK..." th:field="*{Requested}"/> </div>
     <div> <input type="submit" value="Create project"/></div>

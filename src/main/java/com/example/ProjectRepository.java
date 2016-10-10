@@ -16,4 +16,7 @@ public interface ProjectRepository {
     void postUser(String UserName, String Password); //11 sparar användarnamn och lösenord.
     boolean getUser(String UserName, String Password); // Kollar om användarnamn och lösenord stämmer.
 
+    int getUserID(String userName);//
+
+    List<Project> getUsersProjects(String userID);
 }

@@ -51,16 +51,24 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
 
     @GetMapping("/newproject")
     public String newProject(Model model, HttpSession session){
-        model.addAttribute("project", new Project()).addAttribute("user",session.getAttribute("user"));
+        String userName= (String) session.getAttribute("user");
+        List<Project> projects=projectRepository.getUsersProjects(userName);
+        model.addAttribute("project", new Project());
+        model.addAttribute("user",userName);
+        model.addAttribute("projects",projects);
         return "newProject";
-
     }
     @RequestMapping(method=RequestMethod.POST, path="/newproject")
-    public String addNewProject(@ModelAttribute Project project){
-        project.setUser_ID(5); //Hårdkodat tills vi får inloggad User
-        projectRepository.newProject(project);
-        return "redirect:/newproject";
+    public String addNewProject(@ModelAttribute Project project, HttpSession session) {
+        String userName= (String) session.getAttribute("user");
+        if (userName != null) {
+                    project.setUser_ID(5); //Hårdkodat tills vi får inloggad User
+            projectRepository.newProject(project);
+            return "redirect:/newproject";
 
+        } else {
+            return "redirect:/logIn";
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/logIn")
