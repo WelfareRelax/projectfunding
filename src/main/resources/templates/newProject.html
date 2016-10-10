@@ -10,6 +10,13 @@
 <div> Inloggad som:  <span th:text="${user}"></span></div>
 <a href="/logout">Logga ut</a>
 <p></p>
+<h2> Dina projekt</h2>
+<ul>
+    <li th:each="project1:${projects}">
+        <div>Projektnamn: <span th:text="${project1.title}"></span></div>
+        <div>Önskat belopp: <span th:text="${project1.Requested}"></span></div>
+    </li>
+</ul>
 
 <h2> Skapa nytt projekt</h2>
 <p></p>
@@ -22,7 +29,7 @@
     <p></p>
     <p></p>
     <div><textarea placeholder="Beskrivning..." th:field="*{Body}" cols="40" rows="5"></textarea></div>
-        <!--<input placeholder="Description..." th:field="*{Body}" />-->
+
 <p></p>
 <p></p>
     <div><input placeholder="Summa i SEK..." th:field="*{Requested}"/> Begärd summa.</div>
