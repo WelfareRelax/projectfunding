@@ -196,12 +196,12 @@ public class SqlServerProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public int getUserID(String userName) {
+    public long getUserID(String userName) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT User_ID FROM [dbo].[Users] WHERE UserName=? ")) {
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();
-            int userID = 0;
+            long userID = 0;
             while (rs.next()) {
                 userID = rs.getInt("User_ID");
             }
@@ -213,10 +213,10 @@ public class SqlServerProjectRepository implements ProjectRepository {
 
     @Override
     public List<Project> getUsersProjects(String userName) {
-        int userID = this.getUserID(userName);
+        long userID = this.getUserID(userName);
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM [dbo].[Project] WHERE User_ID=?")) {
-            ps.setInt(1, userID);
+            ps.setLong(1, userID);
             ResultSet rs = ps.executeQuery();
             List<Project> projects = new ArrayList<>();
             while (rs.next()) {
