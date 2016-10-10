@@ -4,7 +4,10 @@ body {
 
 #centrera {
     text-align: center;
+    margin: auto;
+    width: 50%;
     color: darkblue;
+    background-color: white;
 }
 
 #centkurs{
@@ -20,6 +23,7 @@ body {
     width: 50%;
     border: 3px solid;
     padding: 10px;
+    background-color: white;
 }
 #investera1{
     font-size: x-large;
@@ -28,4 +32,9 @@ body {
     width: 50%;
     border: 3px solid;
     padding: 10px;
+    background-color: white;
+}
+
+.empty {
+    color: white;
 }
