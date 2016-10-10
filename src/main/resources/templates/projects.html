@@ -5,8 +5,8 @@
     <title>All titles</title>
     <link rel="Stylesheet" href="/Cool.css"/>
 </head>
-<body>
-
+<body background="Investering.jpg">
+<div th:if="${session.user}">
 <article th:each="project : ${projects}">
 
 
@@ -18,7 +18,7 @@
 
 </article>
 
-
+</div>
 
 
 <ul>

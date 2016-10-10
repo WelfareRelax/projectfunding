@@ -6,19 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="Stylesheet" href="/Cool.css"/>
 </head>
-<body>
-<div> Logged in as <span th:text="${user}"></span></div>
-<h2> Create new project</h2>
-<h5>Fill in the details below to create a new project</h5>
+<body background="Investering.jpg">
+<div> Inloggad som:  <span th:text="${user}"></span></div>
+<a href="/logout">Logga ut</a>
+<p></p>
+
+<h2> Skapa nytt projekt</h2>
+<p></p>
+<p></p>
+<h4>Fyll i nedanstående fällt för att skapa ett projekt:</h4>
+<p></p>
+<p></p>
 <form action="#" th:action="@{/newproject}" th:object="${project}" method="POST">
-    <div>Project title: <input placeholder="Title..." th:field="*{title}"/></div>
-
-    <div>Project description: <textarea placeholder="Description..." th:field="*{Body}" cols="40" rows="5"></textarea></div>
+    <div><input placeholder="Titel.." th:field="*{title}"/></div>
+    <p></p>
+    <p></p>
+    <div><textarea placeholder="Beskrivning..." th:field="*{Body}" cols="40" rows="5"></textarea></div>
         <!--<input placeholder="Description..." th:field="*{Body}" />-->
-
-    <div>Requested amount: <input placeholder="Amount in SEK..." th:field="*{Requested}"/> </div>
-    <div> <input type="submit" value="Create project"/></div>
-
+<p></p>
+<p></p>
+    <div><input placeholder="Summa i SEK..." th:field="*{Requested}"/> Begärd summa.</div>
+   <p></p>
+    <div> <input type="submit" value="Skapa Projekt"/></div>
 </form>
 
 <ul>
