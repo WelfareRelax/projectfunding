@@ -62,9 +62,10 @@ public String InsertPosts(HttpServletRequest request, @RequestParam String title
     }
     @RequestMapping(method=RequestMethod.POST, path="/newproject")
     public String addNewProject(@ModelAttribute Project project, HttpSession session) {
+        long userID=projectRepository.getUserID((String)session.getAttribute("user"));
         String userName= (String) session.getAttribute("user");
         if (userName != null) {
-                    project.setUser_ID(5); //Hårdkodat tills vi får inloggad User
+            project.setUser_ID(userID);
             projectRepository.newProject(project);
             return "redirect:/newproject";
 
